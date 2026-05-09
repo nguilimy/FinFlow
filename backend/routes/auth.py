@@ -5,6 +5,7 @@ from models.user import RegisterRequest, UserLogin, Token
 from utils.jwt import create_access_token
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
+import certifi
 
 load_dotenv()
 
@@ -12,7 +13,7 @@ router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-client = AsyncIOMotorClient(MONGO_URI)
+client = AsyncIOMotorClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client.finflow
 users_collection = db.users
 
